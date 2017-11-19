@@ -58,7 +58,8 @@ public class TechServlet extends HttpServlet {
         log.setUserId("TESTUSR");
         log.setFuncId("TESTFUNC");
 
-        log.writeLog("D0001", null);
+        log.writeLog("D0001", new String[]{"aaaa", "bbbb"});
+        log.writeLog("D0001");
 
         // アクションIDを取得する。
         request = null;

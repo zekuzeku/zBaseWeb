@@ -1,5 +1,9 @@
 package net.zarea.common.log;
 
+import java.text.MessageFormat;
+
+import net.zarea.common.message.MessageLoader;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -18,6 +22,8 @@ public class Log {
     private static final String VERTICAL_BAR = " | ";
     private static final String BRACKETS_LEFT = "[";
     private static final String BRACKETS_RIGHT = "]";
+
+    private MessageLoader messageLoader = new MessageLoader();
 
     public void setLogger(Logger logger) {
         this.logger = logger;
@@ -61,33 +67,26 @@ public class Log {
         }
     }
 
-    @SuppressWarnings("unused")
-    private String getLogMsg(String messageId) {
+    private String getLogMsg(String messageId, Object[] param) {
 
-        // TODO メッセージIDからメッセージを取得しパラメータで置換
+        String msg = messageLoader.getMessage(messageId);
+
+        if (param != null && param.length != 0) {
+            msg = MessageFormat.format(msg, param);
+        }
 
         String ret = BRACKETS_LEFT + threadId + BRACKETS_RIGHT + VERTICAL_BAR
                 + BRACKETS_LEFT + sessionId + BRACKETS_RIGHT + VERTICAL_BAR
                 + BRACKETS_LEFT + funcId + BRACKETS_RIGHT + VERTICAL_BAR
                 + BRACKETS_LEFT + userId + BRACKETS_RIGHT + VERTICAL_BAR
                 + messageId + VERTICAL_BAR
-                + "テスト";
+                + msg;
 
         return ret;
     }
 
-    private String getLogMsg(String messageId, Object[] param) {
-
-        // TODO メッセージIDからメッセージを取得しパラメータで置換
-
-        String ret = BRACKETS_LEFT + threadId + BRACKETS_RIGHT + VERTICAL_BAR
-                + BRACKETS_LEFT + sessionId + BRACKETS_RIGHT + VERTICAL_BAR
-                + BRACKETS_LEFT + funcId + BRACKETS_RIGHT + VERTICAL_BAR
-                + BRACKETS_LEFT + userId + BRACKETS_RIGHT + VERTICAL_BAR
-                + messageId + VERTICAL_BAR
-                + "テスト";
-
-        return ret;
+    public void writeLog(String messageId) {
+        writeLog(messageId, null);
     }
 
     public void writeLog(String messageId, Object[] param) {
