@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import net.zarea.common.log.Log;
+import net.zarea.common.message.MessageLoader;
 
 
 /**
@@ -26,18 +27,7 @@ public class TechServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
     // アクション設定ファイルを宣言する。
-    TechActionProp tap = null;
-
-    /**
-     * コンストラクタ
-     */
-    public TechServlet() {
-        super();
-
-        // アクション設定ファイルを生成する。
-        tap = new TechActionProp();
-        tap.getActionProp();
-    }
+    private TechActionLoader actionLoader = new TechActionLoader();
 
     /**
      * doGet
@@ -65,8 +55,8 @@ public class TechServlet extends HttpServlet {
         request = null;
         String actionId = request.getParameter("actionId");
 
-        // アクション設定ファイルがNULLではなく、アクションIDがNULLではない場合
-        if (tap != null && actionId != null) {
+        // アクションIDがNULLではない場合
+        if (actionId != null) {
 
             // TODO 同名リクエストも保持できるようにする。
             // TODO ファイルStreamも保持できるようにする。
@@ -79,7 +69,7 @@ public class TechServlet extends HttpServlet {
             }
 
             // ロジックを取得する。
-            String logic = tap.getAction(actionId);
+            String logic = actionLoader.getAction(actionId);
             try {
                 // ロジックのインスタンスを生成する。
                 TechLogic tl = (TechLogic)Class.forName(logic).newInstance();
