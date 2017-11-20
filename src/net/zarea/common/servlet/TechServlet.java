@@ -12,7 +12,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import net.zarea.common.log.Log;
-import net.zarea.common.message.MessageLoader;
 
 
 /**
@@ -23,11 +22,12 @@ import net.zarea.common.message.MessageLoader;
 @WebServlet("/TechServlet")
 public class TechServlet extends HttpServlet {
 
-    // シリアライズID
+    /** シリアライズID */
     private static final long serialVersionUID = 1L;
 
-    // アクション設定ファイルを宣言する。
-    private TechActionLoader actionLoader = new TechActionLoader();
+    /** アクションローダー */
+    private static TechActionLoader ACTION_LOADER = new TechActionLoader();
+
 
     /**
      * doGet
@@ -52,7 +52,6 @@ public class TechServlet extends HttpServlet {
         log.writeLog("D0001");
 
         // アクションIDを取得する。
-        request = null;
         String actionId = request.getParameter("actionId");
 
         // アクションIDがNULLではない場合
@@ -69,7 +68,7 @@ public class TechServlet extends HttpServlet {
             }
 
             // ロジックを取得する。
-            String logic = actionLoader.getAction(actionId);
+            String logic = ACTION_LOADER.getAction(actionId);
             try {
                 // ロジックのインスタンスを生成する。
                 TechLogic tl = (TechLogic)Class.forName(logic).newInstance();
