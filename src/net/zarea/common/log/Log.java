@@ -31,9 +31,8 @@ public class Log {
     private static final String BRACKETS_LEFT = "[";
     /** 右括弧 */
     private static final String BRACKETS_RIGHT = "]";
-
     /** メッセージローダー */
-    private MessageLoader messageLoader = new MessageLoader();
+    private static MessageLoader MESSAGE_LOADER = new MessageLoader();
 
     /**
      * ロガーを設定する。
@@ -121,7 +120,7 @@ public class Log {
     private String getLogMsg(String messageId, Object[] param) {
 
         // メッセージを取得する。
-        String msg = messageLoader.getMessage(messageId);
+        String msg = MESSAGE_LOADER.getMessage(messageId);
 
         // パラメータがnullではない場合、かつパラメータの長さが0ではない場合
         if (param != null && param.length != 0) {
